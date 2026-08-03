@@ -8,26 +8,38 @@
 #      Markdown formatted page while the second is generated using JSON.
 
 main:
+  - title: "Student Projects"
+    url: /student-projects/
+
+  # Your own research projects. The page exists at /portfolio/ and builds,
+  # it is just unlinked until there is content in _portfolio/ - uncomment
+  # this block to add the tab.
+  # - title: "Projects"
+  #   url: /portfolio/
+
   - title: "Publications"
     url: /publications/
 
-  - title: "Talks"
-    url: /talks/    
+  - title: "Presentations"
+    url: /talks/
 
-  - title: "Teaching"
-    url: /teaching/    
-    
-  - title: "Portfolio"
-    url: /portfolio/
-        
-  - title: "Blog Posts"
-    url: /year-archive/
-    
   - title: "CV"
     url: /cv/
-    
+
+  # ---------------------------------------------------------------
+  # Disabled for now. Uncomment a block to bring the tab back; the
+  # underlying pages still exist and build, they are just unlinked.
+  # ---------------------------------------------------------------
+
+  # - title: "Teaching"
+  #   url: /teaching/
+
+  # - title: "Blog Posts"
+  #   url: /year-archive/
+
+  # CV generated from JSON instead of Markdown - use only one.
   # - title: "CV"
   #   url: /cv-json/
-    
-  - title: "Guide"
-    url: /markdown/
+
+  # - title: "Guide"
+  #   url: /markdown/

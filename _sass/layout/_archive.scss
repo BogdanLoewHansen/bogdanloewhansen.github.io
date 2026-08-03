@@ -243,3 +243,35 @@
     }
   }
 }
+
+
+/*
+   Compact list view
+   --------------------------------------------------------------------------
+   The publication and talk archives are long lists of short entries. The
+   default heading size and paragraph margin ($indent-var, set in
+   _page.scss) mean only two entries fit on screen at a time. Tighten type
+   and spacing for list items only - grid views, and body copy on ordinary
+   pages, are left alone.
+   ========================================================================== */
+
+.list__item {
+  .archive__item-title {
+    margin-top: 1.1em;
+    margin-bottom: 0.15em;
+    font-size: $type-size-4;
+    line-height: 1.3;
+  }
+
+  .archive__item-excerpt {
+    margin: 0.15em 0;
+    font-size: $type-size-5;
+  }
+
+  // Status line, citation and link row.
+  p {
+    margin: 0.15em 0;
+    font-size: $type-size-5;
+    line-height: 1.45;
+  }
+}

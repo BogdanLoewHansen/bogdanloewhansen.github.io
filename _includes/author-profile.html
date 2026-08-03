@@ -28,7 +28,24 @@
         <li class="author__desktop"><i class="fas fa-fw fa-location-dot icon-pad-right" aria-hidden="true"></i>{{ author.location }}</li>
       {% endif %}
       {% if author.employer %}
-        <li class="author__desktop"><i class="fas fa-fw fa-building-columns icon-pad-right" aria-hidden="true"></i>{{ author.employer }}</li>
+        {% comment %}
+          The author__desktop class hides a row below 1024px. It is omitted
+          when employer_url is set, so the link stays reachable on mobile -
+          add it back if you would rather the row were desktop-only again.
+        {% endcomment %}
+        {% comment %}
+          The icon must sit INSIDE the anchor. .author__urls a is display:
+          block, so an icon placed before the link gets pushed onto its own
+          line. Every other row in this list follows the same pattern.
+        {% endcomment %}
+        {% if author.employer_url %}
+          <li><a href="{{ author.employer_url }}"><i class="fas fa-fw fa-building-columns icon-pad-right" aria-hidden="true"></i>{{ author.employer }}</a></li>
+        {% else %}
+          <li class="author__desktop"><i class="fas fa-fw fa-building-columns icon-pad-right" aria-hidden="true"></i>{{ author.employer }}</li>
+        {% endif %}
+      {% endif %}
+      {% if author.lab_url %}
+        <li><a href="{{ author.lab_url }}"><i class="fas fa-fw fa-flask icon-pad-right" aria-hidden="true"></i>{{ author.lab | default: "Research group" }}</a></li>
       {% endif %}
       {% if author.uri %}
         <li><a href="{{ author.uri }}"><i class="fas fa-fw fa-link icon-pad-right" aria-hidden="true"></i>{{ site.data.ui-text[site.locale].website_label | default: "Website" }}</a></li>

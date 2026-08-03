@@ -16,6 +16,20 @@
   }
 }
 
+/* Content scale
+   --------------------------------------------------------------------------
+   The main column reads better at 75% of the base size. .sidebar is a
+   sibling of these two wrappers inside #main, so it keeps the root size and
+   is unaffected; the masthead sits outside #main entirely. Everything
+   within is em-based, so it all scales proportionally from here - this is
+   the one number to change if the content should be larger or smaller.
+   ========================================================================== */
+
+.page,
+.archive {
+  font-size: 0.75em;
+}
+
 .page {
   @include breakpoint($large) {
     @include span(10 of 12 last);
@@ -57,6 +71,22 @@
 
   p, li, dl {
     font-size: 1em;
+  }
+
+  /* Collapsible sections (e.g. the reference lists on Student Projects).
+     <details> has no default margin, and where a floated figure is cleared
+     just after one, the clearance stops the following heading's top margin
+     from collapsing through - so the gap has to be set here. */
+  details {
+    margin: 0.5em 0 2.5em;
+
+    summary {
+      cursor: pointer;
+    }
+
+    > *:last-child {
+      margin-bottom: 0;
+    }
   }
 
   /* paragraph indents */

@@ -184,9 +184,22 @@
     color: var(--global-masthead-link-color);
     text-decoration: none;
 
+    // Without this the tabs inherit the root size (18px on desktop) and
+    // sit much larger than the sidebar links, which end up at ~0.75em
+    // because .sidebar li is already $type-size-6 and the anchor's 1em
+    // is relative to that.
+    font-size: $type-size-6;
+
     &:hover {
       color: var(--global-masthead-link-color-hover);
     }
+  }
+
+  // Keep the site title larger than the tabs. Nested here rather than in
+  // _masthead.scss so it outranks .greedy-nav a - masthead is imported
+  // first, so an equal-specificity rule there would lose the tie.
+  .masthead__menu-item--lg a {
+    font-size: $type-size-5;
   }
 
   button {

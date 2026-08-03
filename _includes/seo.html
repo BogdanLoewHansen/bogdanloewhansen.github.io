@@ -6,8 +6,15 @@
 {% endif %}
 {% assign seo_url = seo_url | default: site.github.url %}
 
-{% if page.title %}
+{% comment %}
+  Tab title is "<page title> - <site title>", except where the page title
+  already equals the site title (the front page), which would otherwise
+  render the name twice.
+{% endcomment %}
+{% if page.title and page.title != site.title %}
   {% assign seo_title = page.title | append: " " | append: site.title_separator | append: " " | append: site.title %}
+{% elsif page.title %}
+  {% assign seo_title = site.title %}
 {% endif %}
 
 {% if seo_title %}

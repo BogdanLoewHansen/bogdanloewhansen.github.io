@@ -1,6 +1,9 @@
-# Ignore the contents of the _site directory and other cache directories
+# Build output and caches
 _site/
+.jekyll-cache/
+.jekyll-metadata
 .sass-cache/
+.asset-cache/
 
 # Ignore the directory for local files during development
 local/
@@ -8,16 +11,37 @@ local/
 # Ignore the Gemfile that is generated
 Gemfile.lock
 
+# Ruby / bundler
+/vendor/
+.bundle/
+
 # Ignore files created by npm
 node_modules
 package-lock.json
 
-# Ignore the vendor file at root level and bundle for alternative installation
-/vendor/
-.bundle/
+# LaTeX build artefacts (cv-source/)
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.lof
+*.lot
+*.out
+*.synctex.gz
+*.toc
+cv-source/*.log
 
-# Ignore folders related to IDEs
+# Editors and IDEs
 .vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*~
 
-# Ignore files created by MacOS
+# OS cruft
 .DS_Store
+Thumbs.db
+ehthumbs.db
+desktop.ini

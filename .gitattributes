@@ -1,0 +1,35 @@
+# Normalise line endings.
+#
+# Without this, whether a file is stored with LF or CRLF depends on each
+# contributor's core.autocrlf setting. Files edited on Windows and files
+# edited in a Linux container then show up as wholly rewritten in diffs.
+#
+# "text=auto" stores everything as LF in the repository and checks out
+# using the platform's native endings, so working copies are unaffected.
+* text=auto
+
+# Explicitly text, regardless of content sniffing
+*.md        text
+*.html      text
+*.yml       text
+*.yaml      text
+*.scss      text
+*.css       text
+*.js        text
+*.rb        text
+*.tex       text
+Gemfile     text
+
+# Never touch these
+*.png       binary
+*.jpg       binary
+*.jpeg      binary
+*.gif       binary
+*.ico       binary
+*.svg       binary
+*.pdf       binary
+*.woff      binary
+*.woff2     binary
+*.ttf       binary
+*.eot       binary
+*.zip       binary

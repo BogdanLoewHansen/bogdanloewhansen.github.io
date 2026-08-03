@@ -26,8 +26,20 @@
       </div>
     {% endif %}
 
+    {% comment %}
+      publications and talks are set to output: false in _config.yml, so they
+      have no individual page - render their titles as plain text rather than
+      as links to a URL that does not exist. Other collections are unchanged.
+    {% endcomment %}
+    {% assign has_page = true %}
+    {% if post.collection == 'publications' or post.collection == 'talks' %}
+      {% assign has_page = false %}
+    {% endif %}
+
     <h2 class="archive__item-title" itemprop="headline">
-      {% if post.link %}
+      {% if has_page == false %}
+        {{ title }}
+      {% elsif post.link %}
         <a href="{{ post.link }}">{{ title }}</a> <a href="{{ base_path }}{{ post.url }}" rel="permalink"><i class="fa fa-link" aria-hidden="true" title="permalink"></i><span class="sr-only">Permalink</span></a>
       {% else %}
         <a href="{{ base_path }}{{ post.url }}" rel="permalink">{{ title }}</a>
@@ -41,7 +53,17 @@
         {% if post.collection == 'teaching' %}
           <p> {{ post.type }}, <i>{{ post.venue }}</i>, {{ post.date | default: "1900-01-01" | date: "%Y" }} </p>
         {% elsif post.collection == 'publications' %}
-          <p>Published in <i>{{ post.venue }}</i>, {{ post.date | default: "1900-01-01" | date: "%Y" }} </p>
+          {% comment %}
+            Venue is omitted when blank - an unsubmitted paper has no venue
+            yet, and the empty <i></i> left a stray comma. Note an empty
+            string is truthy in Liquid, so it has to be compared explicitly.
+          {% endcomment %}
+          {% assign venue = post.venue | strip %}
+          {% if post.status %}
+            <p><strong>{{ post.status }}</strong>{% if venue != "" %} &mdash; <i>{{ venue }}</i>{% endif %}, {{ post.date | default: "1900-01-01" | date: "%Y" }}</p>
+          {% else %}
+            <p>Published{% if venue != "" %} in <i>{{ venue }}</i>{% endif %}, {{ post.date | default: "1900-01-01" | date: "%Y" }}</p>
+          {% endif %}
         {% elsif post.date %}
          <p class="page__date"><strong><i class="fa fa-fw fa-calendar" aria-hidden="true"></i> {{ site.data.ui-text[site.locale].date_label | default: "Published:" }}</strong> <time datetime="{{ post.date | default: "1900-01-01" | date_to_xmlschema }}">{{ post.date | default: "1900-01-01" | date: "%B %d, %Y" }}</time></p>
         {% endif %}
@@ -52,32 +74,46 @@
     <p class="archive__item-excerpt" itemprop="description"><p>{{ post.excerpt | markdownify | remove: '<p>' | remove: '</p>' }}<strong><a href="{{ base_path }}{{ post.url }}" rel="permalink"> Read more</a></strong></p></p>
     {% endif %}
     
-    {% if post.citation and post.paperurl and post.slidesurl and post.bibtexurl %}
-      <p>Recommended citation: {{ post.citation }}<br /><a href="{{ post.paperurl }}">Download Paper</a> | <a href="{{ post.slidesurl }}">Download Slides</a> | <a href="{{ post.bibtexurl }}">Download Bibtex</a></p>
-    {% elsif post.citation and post.paperurl and post.slidesurl %}
-      <p>Recommended citation: {{ post.citation }}<br /><a href="{{ post.paperurl }}">Download Paper</a> | <a href="{{ post.slidesurl }}">Download Slides</a></p>
-    {% elsif post.citation and post.paperurl and post.bibtexurl %}
-      <p>Recommended citation: {{ post.citation }}<br /><a href="{{ post.paperurl }}">Download Paper</a> | <a href="{{ post.bibtexurl }}">Download Bibtex</a></p>
-    {% elsif post.citation and post.paperurl %}
-      <p>Recommended citation: {{ post.citation }}<br /><a href="{{ post.paperurl }}">Download Paper</a></p>
-    {% elsif post.citation and post.slidesurl and post.bibtexurl %}
-      <p>Recommended citation: {{ post.citation }}<br /><a href="{{ post.slidesurl }}">Download Slides</a> | <a href="{{ post.bibtexurl}}">Download Bibtex</a></p>
-    {% elsif post.citation and post.slidesurl %}
-      <p>Recommended citation: {{ post.citation }}<br /><a href="{{ post.slidesurl }}">Download Slides</a></p>
-    {% elsif post.citation and post.bibtexurl %}
-      <p>Recommended citation: {{ post.citation }}<br /><a href="{{ post.bibtexurl }}">Download Bibtex</a></p>
-    {% elsif post.citation %}
+    {% comment %}
+      Link row. Each link is an independent conditional rather than the
+      template's original chain of every paper/slides/bibtex combination,
+      so new link types can be added without multiplying the branches.
+
+      Front matter fields used:
+        doi        - bare DOI, e.g. 10.1007/s13272-025-00816-3
+        paperurl   - record or landing page (e.g. NVA, NTNU Open)
+        linklabel  - overrides the "View publication" label for paperurl
+        slidesurl  - slide deck
+        bibtexurl  - BibTeX entry
+    {% endcomment %}
+
+    {% comment %}
+    Uncomment this part for recommended citations
+    {% if post.citation %}
       <p>Recommended citation: {{ post.citation }}</p>
-    {% elsif post.paperurl and post.bibtexurl %}
-      <p><a href="{{ post.paperurl }}">Download Paper</a> | <a href="{{ post.bibtexurl }}">Download Bibtex</a></p>
-    {% elsif post.paperurl %}
-      <p><a href="{{ post.paperurl }}">Download Paper</a></p>
-    {% elsif post.slidesurl and post.bibtexurl %}
-      <p><a href="{{ post.slidesurl }}">Download Slides</a> | <a href="{{ post.bibtexurl }}">Download Bibtex</a></p>
-    {% elsif post.slidesurl %}
-      <p><a href="{{ post.slidesurl }}">Download Slides</a></p>
-    {% elsif post.bibtexurl %}
-      <p><a href="{{ post.bibtexurl }}">Download Bibtex</a></p>
+    {% endif %}
+    {% endcomment %}
+
+    {% if post.doi or post.paperurl or post.slidesurl or post.bibtexurl %}
+      {% assign sep = "" %}
+      <p>
+        {%- if post.doi -%}
+          {%- assign cleandoi = post.doi | remove: "https://doi.org/" | remove: "http://dx.doi.org/" -%}
+          <a href="https://doi.org/{{ cleandoi }}">DOI: {{ cleandoi }}</a>
+          {%- assign sep = " | " -%}
+        {%- endif -%}
+        {%- if post.paperurl -%}
+          {{ sep }}<a href="{{ post.paperurl }}">{{ post.linklabel | default: "View publication" }}</a>
+          {%- assign sep = " | " -%}
+        {%- endif -%}
+        {%- if post.slidesurl -%}
+          {{ sep }}<a href="{{ post.slidesurl }}">Slides</a>
+          {%- assign sep = " | " -%}
+        {%- endif -%}
+        {%- if post.bibtexurl -%}
+          {{ sep }}<a href="{{ post.bibtexurl }}">BibTeX</a>
+        {%- endif -%}
+      </p>
     {% endif %}
 
   </article>

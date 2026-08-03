@@ -11,3 +11,10 @@ end
 
 gem 'github-pages'
 gem 'connection_pool', '2.5.0'
+
+# Windows does not ship the IANA timezone database, so bundle it.
+# Platform-gated: not installed on GitHub Pages' Linux build servers.
+platforms :mingw, :x64_mingw, :mswin, :jruby do
+  gem 'tzinfo', '>= 1', '< 3'
+  gem 'tzinfo-data'
+end

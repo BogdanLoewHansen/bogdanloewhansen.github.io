@@ -33,6 +33,14 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: bold;
 }
 
+/* The masthead is position: fixed, so following an anchor link scrolls the
+   target heading to y=0 and leaves it hidden behind the bar. Offset the
+   scroll position by the masthead height plus breathing room. calc() is
+   needed because $masthead-height is px and cannot be added to rem in Sass. */
+h1[id], h2[id], h3[id], h4[id], h5[id], h6[id] {
+  scroll-margin-top: calc(#{$masthead-height} + 1.5rem);
+}
+
 h1 {
   margin-top: 0;
   font-size: $type-size-3;
@@ -361,7 +369,65 @@ b, i, strong, em, blockquote, p, q, span, figure, img, h1, h2, header, input, a,
     .page__share,
     .page__related,
     .ads,
-    .page__footer {
-      display: none;
+    .page__footer,
+    .sidebar,
+    .author__urls-wrapper button,
+    .pagination,
+    .no-print {
+      display: none !important;
+    }
+
+    /* The site ships a dark theme. Printing it would give light text on
+       white paper, so force the light palette regardless of the toggle.
+       Redeclared on html[data-theme="dark"] to outrank the theme file. */
+    html,
+    html[data-theme="dark"] {
+      --global-bg-color                  : #fff;
+      --global-footer-bg-color           : #fff;
+      --global-border-color              : #ccc;
+      --global-dark-border-color         : #999;
+      --global-code-background-color     : #f5f5f5;
+      --global-code-text-color           : #000;
+      --global-fig-caption-color         : #333;
+      --global-link-color                : #000;
+      --global-link-color-hover          : #000;
+      --global-link-color-visited        : #000;
+      --global-text-color                : #000;
+      --global-text-color-light          : #333;
+      --global-thead-color               : #eee;
+    }
+
+    /* Reclaim the sidebar gutter and the space reserved for the fixed
+       masthead, so the content uses the full page width. */
+    body {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+
+    .archive,
+    .page,
+    .page__inner-wrap,
+    .page__content {
+      width: 100% !important;
+      max-width: 100% !important;
+      margin: 0 !important;
+      padding-right: 0 !important;
+      float: none !important;
+    }
+
+    /* Keep headings with the content that follows them, and stop list
+       entries being split across a page boundary. */
+    h1, h2, h3, h4 {
+      break-after: avoid;
+      page-break-after: avoid;
+    }
+
+    li, .list__item, figure, table {
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    a {
+      text-decoration: none;
     }
   }

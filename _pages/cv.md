@@ -9,7 +9,7 @@ redirect_from:
 
 {% include base_path %}
 
-Researcher and M.Sc. in Cybernetics and Robotics specializing in vehicle modeling, system identification, and rigid body simulation. Expertise in developing guidance, navigation and control (GNC) algorithms for autonomous systems, including state estimation and statistical fault detection. Experience applying deep neural networks for image classification, and developing a model-based "virtual" detection sensor for UAV icing during PhD research. Appointed member of the NATO STO AVT-388 panel and selected as a 2024 Arctic Frontiers Emerging Leader.
+Researcher specializing in UAV icing: aerodynamic modeling, system identification, and rigid-body simulation of fixed-wing UAVs, and the model-based detection algorithms built on them. Broader background in guidance, navigation, and control (GNC) for autonomous systems, including state estimation and statistical fault detection. Experience applying deep neural networks for image classification, and development of a model-based "virtual" detection sensor for UAV icing during the PhD. Appointed member of the NATO STO AVT-388 panel and selected as a 2024 Arctic Frontiers Emerging Leader.
 
 **Current positions**
 
